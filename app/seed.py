@@ -16,7 +16,6 @@ pc = Pinecone(
 )
 index = pc.Index("personal-care-products")
 def seed_data():
-    # First, create all tables
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     
@@ -66,7 +65,7 @@ def seed_data():
 def upload_products():
     stats = index.describe_index_stats()
     if stats.get("total_vector_count", 0) > 0:
-        print("✅ Pinecone already has data. Skipping upload.")
+        print("Pinecone already has data. Skipping upload.")
         return
     with engine.connect() as conn:
         result = conn.execute(text("SELECT id, name, description, category, price, benefits FROM products"))
